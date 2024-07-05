@@ -34,16 +34,36 @@ function read() {
   return result;
 }
 
-function solve() {
+function solve(board, empty) {
   /**
    * Принимает игровое поле в том формате, в котором его вернули из функции read.
    * Возвращает игровое поле после попытки его решить.
    */
+
+  const getRandom = () => {
+    return (Math.floor(Math.random()* 9) +1)
+  } 
+
+  empty.forEach((el) => board[el.i][el.j] = getRandom())
+
+  return board;
+
   // createEmpty()
   // filterEmptyByRow()
   // filterEmptyByColumn()
   // filterEmptyBySq()
+
+
+//   fromEmptyToNumbers(empty, target, board){
+//     const updt = empty.filter(el => el.q === target)
+//     if(updt.length === 1){
+//       board[updt[0].i][updt[0].j] = target
+//     }
+//   }
+  
+
   // fromEmptyToNumbers()
+
 }
 
 function isSolved(board) {
