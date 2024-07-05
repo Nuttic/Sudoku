@@ -270,6 +270,8 @@ function filterByColumn(empty, board, target) {
   return empty.filter((cell) => !columnContainsTarget(cell.j));
 }
 
+}
+
 module.exports = {
   read,
   solve,
