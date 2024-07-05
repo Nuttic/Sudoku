@@ -1,8 +1,39 @@
+const fs = require('fs');
+const os = require('os');
+
 function read() {
-  /**
-   * Прочесть файл puzzles.txt в кодировке 'utf-8' и вернуть эти данные из функции
-   */
+  const fullSud = fs
+    .readFileSync('./puzzles.txt', 'utf-8')
+    .split(`${os.EOL}`)
+    .filter((word) => word);
+
+  const result = [];
+
+  let targetTask = '';
+  if (process.argv[2]) {
+    targetTask = fullSud[process.argv[2] - 1];
+  } else if (!process.argv[2] || process.argv[2] > 15) {
+    targetTask = fullSud[0];
+  }
+
+  let count = 0;
+
+  for (let i = 0; i < 9; i++) {
+    const temp = [];
+    for (let j = 0; j < 9; j++) {
+      temp.push(
+        targetTask[count] === '-'
+          ? targetTask[count]
+          : Number(targetTask[count])
+      );
+      count++;
+    }
+    result.push(temp);
+  }
+
+  return result;
 }
+
 
 function solve() {
   /**
@@ -25,3 +56,4 @@ function prettyBoard() {
    * Подумай, как симпатичнее его вывести.
    */
 }
+
