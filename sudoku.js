@@ -167,35 +167,13 @@ const createEmpty = (sudoku) => {
   return empty.length !== 0 ? empty : null;
 };
 
-// function filterEmpty(board, target, empty) {
+function filterEmpty(board, target, empty) {
+  const empty1 = filterEmptyByRow(board, target, empty);
 
-//   function filterEmptyByRow(board, target, empty) {
-//     for (let i = 0; i < 9; i++) {
-//       if (board[i].includes(target)) {
-//         for (let t = 0; t < empty.length; t++) {
-//           if (empty[t].i === i) {
-//             empty[t] = 0;
-//           }
-//         }
-//       }
-//     }
+  const empty2 = filterEmptyByCol(board, target, empty1);
 
-//     return empty.filter((el) => el !== 0);
-//   }
-
-//   function filterByColumn(empty, board, target) {
-//     function columnContainsTarget(j) {
-//       for (let i = 0; i < 9; i++) {
-//         if (board[i][j] === target) {
-//           return true;
-//         }
-//       }
-//       return false;
-//     }
-
-//     return empty.filter((cell) => !columnContainsTarget(cell.j));
-//   }
-// }
+  return filterEmptyBySquare(board, target, empty2);
+}
 
 module.exports = {
   read,
@@ -233,7 +211,32 @@ function filterEmptyByCol(board, target, empty) {
   return empty.filter((el) => el !== 0);
 }
 
-// function filterEmptyBySquare(board, target, empty) {}
+function filterEmptyBySquare(board, target, empty) {
+  let numberOfSquare = 1;
+
+  for (let i = 0; i < 9; i += 3) {
+    for (let j = 0; j < 9; j += 3) {
+      const square = [];
+      for (let k = i; k < i + 3; k++) {
+        for (let l = j; l < j + 3; l++) {
+          square.push(board[k][l]);
+        }
+      }
+      if (square.includes(target)) {
+        for (let t = 0; t < empty.length; t++) {
+          if (empty[t].q === numberOfSquare) {
+            empty[t] = 0;
+          }
+        }
+      }
+      numberOfSquare++;
+    }
+  }
+
+  return empty.filter((el) => el !== 0);
+}
+
+function changeFromEmptyToTarget(board, target, empty) {}
 
 const board = read();
 
@@ -251,3 +254,6 @@ console.log(empty1);
 console.log('=========================');
 const empty2 = filterEmptyByCol(board, target, empty1);
 console.log(empty2);
+console.log('=========================');
+const empty3 = filterEmptyBySquare(board, target, empty2);
+console.log(empty3);
