@@ -33,7 +33,78 @@ function read() {
 
   return result;
 }
-console.log(read())
+
+function solve() {
+  /**
+   * Принимает игровое поле в том формате, в котором его вернули из функции read.
+   * Возвращает игровое поле после попытки его решить.
+   */
+  // createEmpty()
+  // filterEmptyByRow()
+  // filterEmptyByColumn()
+  // filterEmptyBySq()
+  // fromEmptyToNumbers()
+}
+
+function isSolved(board) {
+  // Проверка строк
+  for (let i = 0; i < 9; i++) {
+    if (!isValidSet(board[i])) {
+      return false;
+    }
+  }
+
+  // Проверка столбцов
+  for (let j = 0; j < 9; j++) {
+    const column = [];
+    for (let i = 0; i < 9; i++) {
+      column.push(board[i][j]);
+    }
+    if (!isValidSet(column)) {
+      return false;
+    }
+  }
+
+  // Проверка квадратов 3x3
+  for (let i = 0; i < 9; i += 3) {
+    for (let j = 0; j < 9; j += 3) {
+      const square = [];
+      for (let k = i; k < i + 3; k++) {
+        for (let l = j; l < j + 3; l++) {
+          square.push(board[k][l]);
+        }
+      }
+      if (!isValidSet(square)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+function prettyBoard(arr) {
+  let result = '';
+
+  arr.forEach((element) => {
+    result += element.join(' ') + '\n';
+  });
+  return result;
+}
+
+function isValidSet(set) {
+  const seen = new Set();
+  for (let num of set) {
+    if (num !== 0) {
+      if (seen.has(num)) {
+        return false;
+      }
+      seen.add(num);
+    }
+  }
+  return true;
+}
+
 const createEmpty = (sudoku) => {
   const empty = [];
 
@@ -79,84 +150,6 @@ const createEmpty = (sudoku) => {
   return empty.length !== 0 ? empty : null;
 };
 
-function solve() {
-  /**
-   * Принимает игровое поле в том формате, в котором его вернули из функции read.
-   * Возвращает игровое поле после попытки его решить.
-   */
-  // createEmpty()
-
-  // filterEmptyByRow()
-
-  // filterEmptyByColumn()
-
-  // filterEmptyBySq()
-
-  // fromEmptyToNumbers()
-  
-}
-
-function isSolved(board) {
-  
-  // Проверка строк
-  for (let i = 0; i < 9; i++) {
-    if (!isValidSet(board[i])) {
-        return false;
-    }
-}
-
-// Проверка столбцов
-for (let j = 0; j < 9; j++) {
-    const column = [];
-    for (let i = 0; i < 9; i++) {
-        column.push(board[i][j]);
-    }
-    if (!isValidSet(column)) {
-        return false;
-    }
-}
-
- // Проверка квадратов 3x3
- for (let i = 0; i < 9; i += 3) {
-  for (let j = 0; j < 9; j += 3) {
-      const square = [];
-      for (let k = i; k < i + 3; k++) {
-          for (let l = j; l < j + 3; l++) {
-              square.push(board[k][l]);
-          }
-      }
-      if (!isValidSet(square)) {
-          return false;
-      }
-  }
-}
-
-return true;
-}
-
-function isValidSet(set) {
-const seen = new Set();
-for (let num of set) {
-  if (num !== 0) {
-      if (seen.has(num)) {
-          return false;
-      }
-      seen.add(num);
-  }
-}
-return true;
-}
-
-
-function prettyBoard(arr) {
-  let result = '';
-
-  arr.forEach((element) => {
-    result += element.join(' ') + '\n';
-  });
-  return result;
-}
-
 function filterEmptyByRow(board, target, empty) {
   for (let i = 0; i < 9; i++) {
     if (board[i].includes(target)) {
@@ -170,3 +163,10 @@ function filterEmptyByRow(board, target, empty) {
 
   return empty.filter((el) => el !== 0);
 }
+
+module.exports = {
+  read,
+  solve,
+  isSolved,
+  prettyBoard,
+};
