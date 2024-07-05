@@ -34,7 +34,6 @@ function read() {
   return result;
 }
 
-
 function solve(board, empty) {
   /**
    * Принимает игровое поле в том формате, в котором его вернули из функции read.
@@ -42,10 +41,10 @@ function solve(board, empty) {
    */
 
   const getRandom = () => {
-    return (Math.floor(Math.random()* 9) +1)
-  } 
+    return Math.floor(Math.random() * 9) + 1;
+  };
 
-  empty.map((el) => board[el.i][el.j] = getRandom())
+  empty.map((el) => (board[el.i][el.j] = getRandom()));
 
   return board;
 
@@ -54,17 +53,14 @@ function solve(board, empty) {
   // filterEmptyByColumn()
   // filterEmptyBySq()
 
-
-//   fromEmptyToNumbers(empty, target, board){
-//     const updt = empty.filter(el => el.q === target)
-//     if(updt.length === 1){
-//       board[updt[0].i][updt[0].j] = target
-//     }
-//   }
-  
+  //   fromEmptyToNumbers(empty, target, board){
+  //     const updt = empty.filter(el => el.q === target)
+  //     if(updt.length === 1){
+  //       board[updt[0].i][updt[0].j] = target
+  //     }
+  //   }
 
   // fromEmptyToNumbers()
-
 }
 
 function isSolved(board) {
@@ -125,7 +121,6 @@ function isValidSet(set) {
   }
   return true;
 }
-
 
 const createEmpty = (sudoku) => {
   const empty = [];
@@ -172,77 +167,44 @@ const createEmpty = (sudoku) => {
   return empty.length !== 0 ? empty : null;
 };
 
+// function filterEmpty(board, target, empty) {
 
-function solve() {
-  /**
-   * Принимает игровое поле в том формате, в котором его вернули из функции read.
-   * Возвращает игровое поле после попытки его решить.
-   */
-}
+//   function filterEmptyByRow(board, target, empty) {
+//     for (let i = 0; i < 9; i++) {
+//       if (board[i].includes(target)) {
+//         for (let t = 0; t < empty.length; t++) {
+//           if (empty[t].i === i) {
+//             empty[t] = 0;
+//           }
+//         }
+//       }
+//     }
 
-function isSolved(board) {
-  // Проверка строк
-  for (let i = 0; i < 9; i++) {
-    if (!isValidSet(board[i])) {
-      return false;
-    }
-  }
+//     return empty.filter((el) => el !== 0);
+//   }
 
-  // Проверка столбцов
-  for (let j = 0; j < 9; j++) {
-    const column = [];
-    for (let i = 0; i < 9; i++) {
-      column.push(board[i][j]);
-    }
-    if (!isValidSet(column)) {
-      return false;
-    }
-  }
+//   function filterByColumn(empty, board, target) {
+//     function columnContainsTarget(j) {
+//       for (let i = 0; i < 9; i++) {
+//         if (board[i][j] === target) {
+//           return true;
+//         }
+//       }
+//       return false;
+//     }
 
-  // Проверка квадратов 3x3
-  for (let i = 0; i < 9; i += 3) {
-    for (let j = 0; j < 9; j += 3) {
-      const square = [];
-      for (let k = i; k < i + 3; k++) {
-        for (let l = j; l < j + 3; l++) {
-          square.push(board[k][l]);
-        }
-      }
-      if (!isValidSet(square)) {
-        return false;
-      }
-    }
-  }
+//     return empty.filter((cell) => !columnContainsTarget(cell.j));
+//   }
+// }
 
-  return true;
-}
-
-function isValidSet(set) {
-  const seen = new Set();
-  for (let num of set) {
-    if (num !== 0) {
-      if (seen.has(num)) {
-        return false;
-      }
-      seen.add(num);
-    }
-  }
-  return true;
-}
-
-function prettyBoard(arr) {
-  let result = '';
-
-  arr.forEach((element) => {
-    result += element.join(' ') + '\n';
-  });
-  return result;
-}
-
-function filterEmpty(board, target, empty) {
+module.exports = {
+  read,
+  solve,
+  isSolved,
+  prettyBoard,
+};
 
 function filterEmptyByRow(board, target, empty) {
-
   for (let i = 0; i < 9; i++) {
     if (board[i].includes(target)) {
       for (let t = 0; t < empty.length; t++) {
@@ -252,32 +214,40 @@ function filterEmptyByRow(board, target, empty) {
       }
     }
   }
+  return empty.filter((el) => el !== 0);
+}
+
+function filterEmptyByCol(board, target, empty) {
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (board[j][i] === target) {
+        for (let t = 0; t < empty.length; t++) {
+          if (empty[t].j === i) {
+            empty[t] = 0;
+          }
+        }
+      }
+    }
+  }
 
   return empty.filter((el) => el !== 0);
 }
 
+// function filterEmptyBySquare(board, target, empty) {}
 
-function filterByColumn(empty, board, target) {
-  function columnContainsTarget(j) {
-    for (let i = 0; i < 9; i++) {
-      if (board[i][j] === target) {
-        return true;
-      }
-    }
-    return false;
-  }
+const board = read();
 
-  return empty.filter((cell) => !columnContainsTarget(cell.j));
-}
+const target = 1;
 
-}
+const empty = createEmpty(board);
 
-module.exports = {
-  read,
-  solve,
-  isSolved,
-  prettyBoard,
-
-};
-
-
+console.log('=========================');
+console.log(prettyBoard(board));
+console.log('=========================');
+console.log(empty);
+console.log('=========================');
+const empty1 = filterEmptyByRow(board, target, empty);
+console.log(empty1);
+console.log('=========================');
+const empty2 = filterEmptyByCol(board, target, empty1);
+console.log(empty2);
