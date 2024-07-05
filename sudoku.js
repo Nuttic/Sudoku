@@ -79,11 +79,20 @@ const createEmpty = (sudoku) => {
   return empty.length !== 0 ? empty : null;
 };
 
-function solve() {
+function solve(board, empty) {
   /**
    * Принимает игровое поле в том формате, в котором его вернули из функции read.
    * Возвращает игровое поле после попытки его решить.
    */
+
+  const getRandom = () => {
+    return (Math.floor(Math.random()* 9) +1)
+  } 
+
+  empty.forEach((el) => board[el.i][el.j] = getRandom())
+
+  return board;
+
   // createEmpty()
 
   // filterEmptyByRow()
@@ -92,7 +101,12 @@ function solve() {
 
   // filterEmptyBySq()
 
-  // fromEmptyToNumbers()
+//   fromEmptyToNumbers(empty, target, board){
+//     const updt = empty.filter(el => el.q === target)
+//     if(updt.length === 1){
+//       board[updt[0].i][updt[0].j] = target
+//     }
+//   }
   
 }
 
