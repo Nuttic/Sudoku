@@ -102,3 +102,17 @@ function prettyBoard(arr) {
   });
   return result;
 }
+
+function filterEmpty(board, target, empty) {
+  for (let i = 0; i < 9; i++) {
+    if (board[i].includes(target)) {
+      for (let t = 0; t < empty.length; t++) {
+        if (empty[t].i === i) {
+          empty[t] = 0;
+        }
+      }
+    }
+  }
+
+  return empty.filter((el) => el !== 0);
+}
