@@ -1,4 +1,3 @@
-const { log } = require('console');
 const fs = require('fs');
 const os = require('os');
 
@@ -85,6 +84,16 @@ function solve() {
    * Принимает игровое поле в том формате, в котором его вернули из функции read.
    * Возвращает игровое поле после попытки его решить.
    */
+  // createEmpty()
+
+  // filterEmptyByRow()
+
+  // filterEmptyByColumn()
+
+  // filterEmptyBySq()
+
+  // fromEmptyToNumbers()
+  
 }
 
 function isSolved(board) {
@@ -148,7 +157,7 @@ function prettyBoard(arr) {
   return result;
 }
 
-function filterEmpty(board, target, empty) {
+function filterEmptyByRow(board, target, empty) {
   for (let i = 0; i < 9; i++) {
     if (board[i].includes(target)) {
       for (let t = 0; t < empty.length; t++) {
