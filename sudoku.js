@@ -44,7 +44,7 @@ function solve(board, empty) {
     return (Math.floor(Math.random()* 9) +1)
   } 
 
-  empty.forEach((el) => board[el.i][el.j] = getRandom())
+  empty.map((el) => board[el.i][el.j] = getRandom())
 
   return board;
 
@@ -189,4 +189,5 @@ module.exports = {
   solve,
   isSolved,
   prettyBoard,
-};
+  createEmpty
+}
