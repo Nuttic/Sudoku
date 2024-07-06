@@ -34,7 +34,7 @@ function read() {
   return result;
 }
 
-function solve(board, empty) {
+function solveFriday(board, empty) {
   /**
    * Принимает игровое поле в том формате, в котором его вернули из функции read.
    * Возвращает игровое поле после попытки его решить.
@@ -61,6 +61,26 @@ function solve(board, empty) {
   //   }
 
   // fromEmptyToNumbers()
+}
+
+function solve(board) {
+  /**
+   * Принимает игровое поле в том формате, в котором его вернули из функции read.
+   * Возвращает игровое поле после попытки его решить.
+   */
+
+  for (let target = 1; target < 10; target++) {
+    const empty = createEmpty(board);
+    const empty1 = filterEmpty(board, target, empty);
+    board = changeFromEmptyToTarget(board, target, empty1);
+  }
+
+  // if (isSolved(board)) {
+  //   return board;
+  // }
+
+  // return solve(board);
+  return board
 }
 
 function isSolved(board) {
@@ -172,7 +192,9 @@ function filterEmpty(board, target, empty) {
 
   const empty2 = filterEmptyByCol(board, target, empty1);
 
-  return filterEmptyBySquare(board, target, empty2);
+  const empty3 = filterEmptyBySquare(board, target, empty2);
+
+  return filterEmptyForDoubles(empty3);
 }
 
 module.exports = {
@@ -236,7 +258,22 @@ function filterEmptyBySquare(board, target, empty) {
   return empty.filter((el) => el !== 0);
 }
 
-function changeFromEmptyToTarget(board, target, empty) {}
+function filterEmptyForDoubles(empty) {
+  for (let i = 0; i < empty.length; i++) {
+    for (let j = i + 1; j < empty.length; j++) {
+      if (empty[i].q === empty[j].q) {
+        empty[j] = 0;
+        empty[i] = 0;
+      }
+    }
+  }
+  return empty.filter((el) => el !== 0);
+}
+
+function changeFromEmptyToTarget(board, target, empty) {
+  empty.map((el) => (board[el.i][el.j] = target));
+  return board;
+}
 
 const board = read();
 
@@ -244,16 +281,44 @@ const target = 1;
 
 const empty = createEmpty(board);
 
-console.log('=========================');
+// console.log('=========================');
+// console.log(prettyBoard(board));
+// console.log('=========================');
+// console.log(empty);
+// console.log('=========================');
+// const empty1 = filterEmptyByRow(board, target, empty);
+// console.log(empty1);
+// console.log('=========================');
+// const empty2 = filterEmptyByCol(board, target, empty1);
+// console.log(empty2);
+// console.log('=========================');
+// const empty3 = filterEmptyBySquare(board, target, empty2);
+// console.log(empty3);
+// console.log('=========================');
+// const empty4 = filterEmptyForDoubles(empty3);
+// console.log(empty4);
+// console.log('=========================');
+// const boardTrue = changeFromEmptyToTarget(board, target, empty4);
+// console.log(prettyBoard(boardTrue));
+
+// console.log(prettyBoard(board));
+// console.log('=========================');
+// // console.log(empty);
+// console.log('=========================');
+// const empty1 = filterEmpty(board, target, empty);
+// // console.log(empty1);
+// console.log('=========================');
+// const boardTrue = changeFromEmptyToTarget(board, target, empty1);
+// console.log(prettyBoard(boardTrue));
+
 console.log(prettyBoard(board));
-console.log('=========================');
-console.log(empty);
-console.log('=========================');
-const empty1 = filterEmptyByRow(board, target, empty);
-console.log(empty1);
-console.log('=========================');
-const empty2 = filterEmptyByCol(board, target, empty1);
-console.log(empty2);
-console.log('=========================');
-const empty3 = filterEmptyBySquare(board, target, empty2);
-console.log(empty3);
+console.log('1=========================');
+console.log(prettyBoard(solve(board)));
+console.log('2=========================');
+console.log(prettyBoard(solve(board)));
+console.log('3=========================');
+console.log(prettyBoard(solve(board)));
+console.log('4=========================');
+console.log(prettyBoard(solve(board)));
+console.log('5=========================');
+console.log(prettyBoard(solve(board)));
