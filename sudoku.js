@@ -34,40 +34,43 @@ function read() {
   return result;
 }
 
-function solveFriday(board, empty) {
-  /**
-   * Принимает игровое поле в том формате, в котором его вернули из функции read.
-   * Возвращает игровое поле после попытки его решить.
-   */
+// function solveFriday(board, empty) {
+//   /**
+//    * Принимает игровое поле в том формате, в котором его вернули из функции read.
+//    * Возвращает игровое поле после попытки его решить.
+//    */
 
-  const getRandom = () => {
-    return Math.floor(Math.random() * 9) + 1;
-  };
+//   const getRandom = () => {
+//     return Math.floor(Math.random() * 9) + 1;
+//   };
 
-  empty.map((el) => (board[el.i][el.j] = getRandom()));
+//   empty.map((el) => (board[el.i][el.j] = getRandom()));
 
-  return board;
+//   return board;
 
-  // createEmpty()
-  // filterEmptyByRow()
-  // filterEmptyByColumn()
-  // filterEmptyBySq()
+//   // createEmpty()
+//   // filterEmptyByRow()
+//   // filterEmptyByColumn()
+//   // filterEmptyBySq()
 
-  //   fromEmptyToNumbers(empty, target, board){
-  //     const updt = empty.filter(el => el.q === target)
-  //     if(updt.length === 1){
-  //       board[updt[0].i][updt[0].j] = target
-  //     }
-  //   }
+//   //   fromEmptyToNumbers(empty, target, board){
+//   //     const updt = empty.filter(el => el.q === target)
+//   //     if(updt.length === 1){
+//   //       board[updt[0].i][updt[0].j] = target
+//   //     }
+//   //   }
 
-  // fromEmptyToNumbers()
-}
+//   // fromEmptyToNumbers()
+// }
 
 function solve(board) {
   /**
    * Принимает игровое поле в том формате, в котором его вернули из функции read.
    * Возвращает игровое поле после попытки его решить.
    */
+  if (createEmpty(board) === null) {
+    return board;
+  }
 
   for (let target = 1; target < 10; target++) {
     const empty = createEmpty(board);
@@ -75,12 +78,7 @@ function solve(board) {
     board = changeFromEmptyToTarget(board, target, empty1);
   }
 
-  // if (isSolved(board)) {
-  //   return board;
-  // }
-
-  // return solve(board);
-  return board
+  return solve(board);
 }
 
 function isSolved(board) {
@@ -188,13 +186,17 @@ const createEmpty = (sudoku) => {
 };
 
 function filterEmpty(board, target, empty) {
-  const empty1 = filterEmptyByRow(board, target, empty);
+  if (empty) {
+    const empty1 = filterEmptyByRow(board, target, empty);
 
-  const empty2 = filterEmptyByCol(board, target, empty1);
+    const empty2 = filterEmptyByCol(board, target, empty1);
 
-  const empty3 = filterEmptyBySquare(board, target, empty2);
+    const empty3 = filterEmptyBySquare(board, target, empty2);
 
-  return filterEmptyForDoubles(empty3);
+    return filterEmptyForDoubles(empty3);
+  } else {
+    return empty;
+  }
 }
 
 module.exports = {
@@ -260,18 +262,68 @@ function filterEmptyBySquare(board, target, empty) {
 
 function filterEmptyForDoubles(empty) {
   for (let i = 0; i < empty.length; i++) {
+    let counter = 0;
     for (let j = i + 1; j < empty.length; j++) {
       if (empty[i].q === empty[j].q) {
         empty[j] = 0;
-        empty[i] = 0;
+
+        counter++;
       }
+    }
+    if (counter > 0) {
+      empty[i] = 0;
+    }
+  }
+  for (let i = 0; i < empty.length; i++) {
+    let counter = 0;
+    for (let j = i + 1; j < empty.length; j++) {
+      if (empty[i].i === empty[j].i) {
+        empty[j] = 0;
+        counter++;
+      }
+    }
+    if (counter > 0) {
+      empty[i] = 0;
+    }
+  }
+  for (let i = 0; i < empty.length; i++) {
+    let counter = 0;
+    for (let j = i + 1; j < empty.length; j++) {
+      if (empty[i].j === empty[j].j) {
+        empty[j] = 0;
+        counter++;
+      }
+    }
+    if (counter > 0) {
+      empty[i] = 0;
     }
   }
   return empty.filter((el) => el !== 0);
 }
 
 function changeFromEmptyToTarget(board, target, empty) {
-  empty.map((el) => (board[el.i][el.j] = target));
+  if (empty) {
+    empty.map((el) => (board[el.i][el.j] = target));
+    return board;
+  } else {
+    return board;
+  }
+}
+
+function solverForOneEmpty(board) {
+  for (let i = 0; i < 9; i++) {
+    if (board[i].filter((el) => typeof el === 'string').length === 1) {
+      const target =
+        45 -
+        board[i]
+          .filter((el) => typeof el === 'number')
+          .reduce((accumulator, currentValue) => accumulator + currentValue);
+
+      const index = board[i].findIndex((x) => x === '-');
+
+      board[i][index] = target;
+    }
+  }
   return board;
 }
 
@@ -314,11 +366,13 @@ const empty = createEmpty(board);
 console.log(prettyBoard(board));
 console.log('1=========================');
 console.log(prettyBoard(solve(board)));
-console.log('2=========================');
-console.log(prettyBoard(solve(board)));
-console.log('3=========================');
-console.log(prettyBoard(solve(board)));
-console.log('4=========================');
-console.log(prettyBoard(solve(board)));
-console.log('5=========================');
-console.log(prettyBoard(solve(board)));
+
+// console.log('2=========================');
+// console.log(prettyBoard(solve(board)));
+// console.log('3=========================');
+// console.log(prettyBoard(solve(board)));
+// console.log('4=========================');
+// console.log(prettyBoard(solve(board)));
+// console.log('5=========================');
+// console.log(prettyBoard(solve(board)));
+console.log(isSolved(solve(board)));
