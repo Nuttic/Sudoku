@@ -1,7 +1,10 @@
 // Используйте для решения судоку необходимые функции из файла sudoku.js
 
-const { read, solve, isSolved, prettyBoard, createEmpty } = require("./sudoku");
+const { read, solve, isSolved, prettyBoard } = require('./sudoku');
 
-console.log(read());
-console.log(isSolved(solve(read(), createEmpty(read()))));
-console.table(prettyBoard(solve(read(), createEmpty(read()))));
+const board = read();
+
+console.log(prettyBoard(board));
+console.log('=========================');
+console.log(prettyBoard(solve(board)));
+console.log(isSolved(solve(board)));

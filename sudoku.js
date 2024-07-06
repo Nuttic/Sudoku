@@ -199,13 +199,6 @@ function filterEmpty(board, target, empty) {
   }
 }
 
-module.exports = {
-  read,
-  solve,
-  isSolved,
-  prettyBoard,
-};
-
 function filterEmptyByRow(board, target, empty) {
   for (let i = 0; i < 9; i++) {
     if (board[i].includes(target)) {
@@ -310,69 +303,9 @@ function changeFromEmptyToTarget(board, target, empty) {
   }
 }
 
-function solverForOneEmpty(board) {
-  for (let i = 0; i < 9; i++) {
-    if (board[i].filter((el) => typeof el === 'string').length === 1) {
-      const target =
-        45 -
-        board[i]
-          .filter((el) => typeof el === 'number')
-          .reduce((accumulator, currentValue) => accumulator + currentValue);
-
-      const index = board[i].findIndex((x) => x === '-');
-
-      board[i][index] = target;
-    }
-  }
-  return board;
-}
-
-const board = read();
-
-const target = 1;
-
-const empty = createEmpty(board);
-
-// console.log('=========================');
-// console.log(prettyBoard(board));
-// console.log('=========================');
-// console.log(empty);
-// console.log('=========================');
-// const empty1 = filterEmptyByRow(board, target, empty);
-// console.log(empty1);
-// console.log('=========================');
-// const empty2 = filterEmptyByCol(board, target, empty1);
-// console.log(empty2);
-// console.log('=========================');
-// const empty3 = filterEmptyBySquare(board, target, empty2);
-// console.log(empty3);
-// console.log('=========================');
-// const empty4 = filterEmptyForDoubles(empty3);
-// console.log(empty4);
-// console.log('=========================');
-// const boardTrue = changeFromEmptyToTarget(board, target, empty4);
-// console.log(prettyBoard(boardTrue));
-
-// console.log(prettyBoard(board));
-// console.log('=========================');
-// // console.log(empty);
-// console.log('=========================');
-// const empty1 = filterEmpty(board, target, empty);
-// // console.log(empty1);
-// console.log('=========================');
-// const boardTrue = changeFromEmptyToTarget(board, target, empty1);
-// console.log(prettyBoard(boardTrue));
-
-console.log(prettyBoard(board));
-console.log('1=========================');
-console.log(prettyBoard(solve(board)));
-
-// console.log('2=========================');
-// console.log(prettyBoard(solve(board)));
-// console.log('3=========================');
-// console.log(prettyBoard(solve(board)));
-// console.log('4=========================');
-// console.log(prettyBoard(solve(board)));
-// console.log('5=========================');
-// console.log(prettyBoard(solve(board)));
-console.log(isSolved(solve(board)));
+module.exports = {
+  read,
+  solve,
+  isSolved,
+  prettyBoard,
+};
